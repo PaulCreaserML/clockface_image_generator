@@ -6,11 +6,9 @@ import matplotlib.pyplot as plt
 
 
 # Parameters of the clock hands
-hand_widths = [.05, .05, .00]  # Hide seconds hand
+hand_widths = [.025, .025, .00]  # Hide seconds hand
 # Hand Lengths
 lengths = [1.0, 1.3, 1.5]
-# Colors
-colors = plt.cm.gray(np.linspace(0, 1, 4))[0:3]
 
 def time_to_radians(time):
     """
@@ -23,7 +21,7 @@ def time_to_radians(time):
     rads[2] = 0 # Seconds hand not supported
     return rads
 
-def setup_axes():
+def setup_axes(colors):
     """
     """
     # Hard coded values
@@ -48,14 +46,14 @@ def setup_axes():
     return fig, ax, bars
 
 
-def _update_bars(ax, bars, rotation, times, labels=True):
+def _update_bars(ax, bars, rotation, times, hand_widths, colors, labels=True):
     rads = time_to_radians(times)
     ax.clear()
     marks = np.linspace( 360. / 12, 360, 12, endpoint=True)
-    marks_rot = rotate( marks, rotation)
+    marks_rot = rotate( marks, rotation, colors)
     mwow = ( marks_rot/30 )
     mwow = mwow.astype(int)
-    ax.set_thetagrids(marks, mwow, fontsize=30)
+    ax.set_thetagrids(marks, mwow, fontsize=10)
     ax.set_theta_direction(-1)
     ax.set_theta_offset(np.pi / 2)
     ax.grid(None)
@@ -70,7 +68,7 @@ def _update_bars(ax, bars, rotation, times, labels=True):
     bars = ax.bar([rads[0], rads[1], rads[0]], lengths, width=hand_widths, bottom=0.0, color=colors, linewidth=0)
 
 
-def rotate(l, n):
+def rotate(l, n, colors):
     """
     :param argv: Command line arguments
     """
@@ -78,8 +76,8 @@ def rotate(l, n):
     end   =  l[len(l)-n:]
     return np.append( end, start)
 
-def init_clock():
-    fig, ax, bars = setup_axes()
+def init_clock(colors):
+    fig, ax, bars = setup_axes(colors)
     return fig, ax, bars
 
 
@@ -102,10 +100,10 @@ def save_clock(fig, base_dir, sub_dir, filename_prefix, time):
     return image_filename
 
 
-def set_clock(ax, bars, hours, minutes, seconds, rotation=0,
+def set_clock(ax, bars, hours, minutes, seconds, hand_widths, colors, rotation=0,
               show=False, labels= True):
     time = (hours, minutes, seconds)
-    _update_bars(ax, bars, rotation, time, labels )
+    _update_bars(ax, bars, rotation, time, hand_widths, colors, labels )
 
     if show:
         #plt.show()
@@ -154,8 +152,11 @@ def clock_face_generation(dir_name, csv):
     if not os.path.isdir(full_dir):
         os.mkdir(full_dir)
         print('Created directory {}.'.format(full_dir))
+
+    # Colors
+    colors = plt.cm.gray(np.linspace(0, 1, 6))[0:3]
     #
-    fig, ax, bars = init_clock()
+    fig, ax, bars = init_clock(colors)
     # Hour range
     hours = range( 0, 12 )
     # Minute Range
@@ -164,11 +165,18 @@ def clock_face_generation(dir_name, csv):
     times = [x for x in product(hours, minutes, seconds)]
 
     with open( os.path.join( dir_name, csv ), 'w') as file_handle:
+
         file_handle.write("filename, hs, hc, ms, mc, hrs, hrc\n")
+
         for t in times:
             print('Generating clock for time: {}'.format(t))
 
-            set_clock(ax, bars, *t, rotation=0, show=True, labels=True)
+            # Colors
+            colors = plt.cm.gray(np.linspace(0, 1, 6))[0:3]
+            # Parameters of the clock hands
+            hand_widths = [.05, .05, .00]  # Hide seconds hand
+
+            set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=True)
             clock_filename = save_clock(fig, base_dir, dir_name, 'A', t)
 
             h  =  t[0] # hour_encode
@@ -194,12 +202,41 @@ def clock_face_generation(dir_name, csv):
             full_csv_line = '{},{}\n'.format(clock_filename, csv_line )
             file_handle.write(full_csv_line)
 
+            # B
             print('Generating clock for time: {}'.format(t))
-            set_clock(ax, bars, *t, rotation=0, show=True, labels=False)
+            # Parameters of the clock hands
+            hand_widths = [.045, .045, .00]  # Hide seconds hand
+
+            set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=False)
             clock_filename = save_clock(fig, base_dir, dir_name, 'B', t)
             # Store the index string: the filename, hour, and minute
             full_csv_line = '{},{}\n'.format(clock_filename, csv_line )
             file_handle.write(full_csv_line)
+
+            # Colors
+            colors = plt.cm.gray(np.linspace(0, 1, 20))[0:3]
+
+
+            # C
+            print('Generating clock for time: {}'.format(t))
+            # Parameters of the clock hands
+            hand_widths = [.035, .035, .00]  # Hide seconds hand
+            set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=False)
+            clock_filename = save_clock(fig, base_dir, dir_name, 'C', t)
+            # Store the index string: the filename, hour, and minute
+            full_csv_line = '{},{}\n'.format(clock_filename, csv_line )
+            file_handle.write(full_csv_line)
+
+            # D
+            print('Generating clock for time: {}'.format(t))
+            # Parameters of the clock hands
+            hand_widths = [.025, .025, .00]  # Hide seconds hand
+            set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=False)
+            clock_filename = save_clock(fig, base_dir, dir_name, 'D', t)
+            # Store the index string: the filename, hour, and minute
+            full_csv_line = '{},{}\n'.format(clock_filename, csv_line )
+            file_handle.write(full_csv_line)
+
 
     print('Created {} clocks.'.format(len(times)))
 
