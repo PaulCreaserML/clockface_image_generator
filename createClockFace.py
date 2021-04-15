@@ -166,44 +166,35 @@ def clock_face_generation(dir_name, csv):
 
     with open( os.path.join( dir_name, csv ), 'w') as file_handle:
 
-        file_handle.write("filename, hs, hc, ms, mc, hrs, hrc\n")
-
+        file_handle.write("filename, hs, hc, ms, mc\n")
         for t in times:
-            print('Generating clock for time: {}'.format(t))
-
             # Colors
             colors = plt.cm.gray(np.linspace(0, 1, 6))[0:3]
             # Parameters of the clock hands
             hand_widths = [.05, .05, .00]  # Hide seconds hand
-
             set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=True)
             clock_filename = save_clock(fig, base_dir, dir_name, 'A', t)
 
             h  =  t[0] # hour_encode
             m  =  t[1]
-            hm =  h + m/60.0
+            hm =  h  # + m/60.0
             h  =  30*h
             m  =  6*m # minute_encode(
-            hm =  30*hm
-            print( hm, h, m )
+            hm =  30*hm + m/60.0
 
             # Old Code that needs checking ( Was this necessary)
             # Preprocessing the clock handle in a way to avoid step changes from 12->0, 59->0
             # 1.0001 scaling to prevent -1 or 1 saturated output
-            csv_line =        str( math.sin( math.radians(hm))/1.0001 )
-            csv_line += "," + str( math.cos( math.radians(hm))/1.0001 )
-            csv_line += "," + str( math.sin( math.radians(m) )/1.0001 )
-            csv_line += "," + str( math.cos( math.radians(m) )/1.0001 )
-            csv_line += "," + str( math.sin( math.radians(h) )/1.0001 )
-            csv_line += "," + str( math.cos( math.radians(h) )/1.0001 )
+            csv_line =        str( math.sin( math.radians(hm) )/1.01 )
+            csv_line += "," + str( math.cos( math.radians(hm) )/1.01 )
+            csv_line += "," + str( math.sin( math.radians(m) )/1.01 )
+            csv_line += "," + str( math.cos( math.radians(m) )/1.01 )
 
             # h sin, cos, m sin, cos
-            print( clock_filename)
             full_csv_line = '{},{}\n'.format(clock_filename, csv_line )
             file_handle.write(full_csv_line)
 
             # B
-            print('Generating clock for time: {}'.format(t))
             # Parameters of the clock hands
             hand_widths = [.045, .045, .00]  # Hide seconds hand
 
@@ -216,9 +207,7 @@ def clock_face_generation(dir_name, csv):
             # Colors
             colors = plt.cm.gray(np.linspace(0, 1, 20))[0:3]
 
-
             # C
-            print('Generating clock for time: {}'.format(t))
             # Parameters of the clock hands
             hand_widths = [.035, .035, .00]  # Hide seconds hand
             set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=False)
@@ -228,7 +217,6 @@ def clock_face_generation(dir_name, csv):
             file_handle.write(full_csv_line)
 
             # D
-            print('Generating clock for time: {}'.format(t))
             # Parameters of the clock hands
             hand_widths = [.025, .025, .00]  # Hide seconds hand
             set_clock(ax, bars, *t, hand_widths, colors, rotation=0, show=True, labels=False)
@@ -236,9 +224,6 @@ def clock_face_generation(dir_name, csv):
             # Store the index string: the filename, hour, and minute
             full_csv_line = '{},{}\n'.format(clock_filename, csv_line )
             file_handle.write(full_csv_line)
-
-
-    print('Created {} clocks.'.format(len(times)))
 
 
 def main( argv ):
