@@ -235,11 +235,11 @@ def main( argv ):
     try:
         opts, args = getopt.getopt(argv,"hd:c:",["dir=","csv"])
     except getopt.GetoptError:
-        print('python createClockFace.py -d <dir> -c <csv>')
+        print('python createClockFace_matplotlib.py -d <dir> -c <csv>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('python createClockFace.py -d <dir> -c <csv>')
+            print('python createClockFace_matplotlib.py -d <dir> -c <csv>')
             sys.exit()
         elif opt in ("-d", "--dir"):
             dir = arg
@@ -247,7 +247,7 @@ def main( argv ):
             csv = arg
 
     if csv is None or dir is  None:
-        print('python createClockFace.py -d <dir> -c <csv>')
+        print('python createClockFace_matplotlib.py -d <dir> -c <csv>')
         exit(2)
 
     print(" Directory ", dir  )
@@ -256,6 +256,6 @@ def main( argv ):
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
-        print('python createClockFace.py  -d <dir> -c <csv>')
+        print('python createClockFace_matplotlib.py  -d <dir> -c <csv>')
         sys.exit(2)
     main(sys.argv[1:])
