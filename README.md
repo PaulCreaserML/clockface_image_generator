@@ -34,9 +34,11 @@ Creating an accurate model, with perfect data is relatively simple. However crea
 
 # Function
 
-This code uses matplotlib to generator clock face images
-It us quite old and needs updating
-A companion csv file is also generated. This provides labels for training a neural network
+There are two scripts for generating clock faces. One uses matplotlib and the other tensors to generate clock faces.
+
+It iss quite old and needs updating. A companion csv file is also generated. This provides labels for training a neural network.
+
+A better approach might be to generate everything on the fy during training, this includes clock face, hands etc...
 
 # CSV
 
