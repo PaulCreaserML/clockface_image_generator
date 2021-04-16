@@ -34,7 +34,19 @@ Creating an accurate model, with perfect data is relatively simple. However crea
 
 # Function
 
-There are two scripts for generating clock faces. One uses matplotlib and the other tensors to generate clock faces.
+There are three scripts for generating clock faces.
+
+## Matplotlib 
+
+Matplotlib is used to generate clockface images
+
+## Tensor
+
+Tensors are used to generate clock faces.
+
+## Tensor + Image
+
+Tensors and a clockface png or jpg image are used to generate clock faces. You must provide this clockface image.
 
 It iss quite old and needs updating. A companion csv file is also generated. This provides labels for training a neural network.
 
