@@ -110,10 +110,10 @@ def clock_face_gen( sub_dir, file_handle, diameter, hour_len, minute_len, thickn
 
             filename = "clock_" + str(hour) + "_" + str(minute) + "_" + str(hour_len) + "_" + str(minute_len)+ "_" + str(thickness) + "_0.png"
             filename_path = os.path.join(sub_dir, filename)
-            csv_line =  filename_path + "," +  str( math.sin( math.radians(hour_precise*30)) )
-            csv_line += "," + str( math.cos( math.radians(hour_precise*30)) )
-            csv_line += "," + str( math.sin( math.radians(minute*6)) )
-            csv_line += "," + str( math.cos( math.radians(minute*6)) ) + "\n'"
+            csv_line =  filename_path + "," +  str( math.sin( math.radians(hour_precise*30))/1.01 )
+            csv_line += "," + str( math.cos( math.radians(hour_precise*30))/1.01 )
+            csv_line += "," + str( math.sin( math.radians(minute*6))/1.01 )
+            csv_line += "," + str( math.cos( math.radians(minute*6))/1.01 ) + "\n'"
             file_handle.write(csv_line)
             tensor_to_png( image, filename_path )
 
@@ -148,11 +148,11 @@ def main( argv ):
     try:
         opts, args = getopt.getopt(argv,"hd:c:i:",["dir=","csv","invert"])
     except getopt.GetoptError:
-        print('python createClockFaceRaw.py -d <dir> -c <csv> -i <invert>')
+        print('python createClockFaceRawTensor.py -d <dir> -c <csv> -i <invert>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('python createClockFaceRaw.py -d <dir> -c <csv> -i <invert>')
+            print('python createClockFaceTensor.py -d <dir> -c <csv> -i <invert>')
             sys.exit()
         elif opt in ("-d", "--dir"):
             dir = arg
@@ -162,7 +162,7 @@ def main( argv ):
             invert = int(arg)
 
     if csv is None or dir is  None:
-        print('python createClockFaceRaw.py -d <dir> -c <csv> -i <invert>')
+        print('python createClockFaceTensor.py -d <dir> -c <csv> -i <invert>')
         exit(2)
 
     print(" Directory ", dir  )
@@ -171,6 +171,6 @@ def main( argv ):
 
 if __name__ == "__main__":
     if len(sys.argv) != 7:
-        print('python createClockFaceRaw.py  -d <dir> -c <csv> -i <invert>')
+        print('python createClockFaceTensor.py  -d <dir> -c <csv> -i <invert>')
         sys.exit(2)
     main(sys.argv[1:])
