@@ -95,7 +95,7 @@ def clock_face_gen( clockface, sub_dir, file_handle, diameter, hour_len, minute_
             csv_line =  filename_path + "," +  str( math.sin( math.radians(hour_precise*30))/1.01 )
             csv_line += "," + str( math.cos( math.radians(hour_precise*30))/1.01 )
             csv_line += "," + str( math.sin( math.radians(minute*6))/1.01 )
-            csv_line += "," + str( math.cos( math.radians(minute*6))/1.01 ) + "\n'"
+            csv_line += "," + str( math.cos( math.radians(minute*6))/1.01 ) + "\n"
             file_handle.write(csv_line)
             tensor_to_png( image, filename_path )
 
@@ -103,6 +103,7 @@ def clock_multiface_gen( image, dir_name, file_handle, diameter, hand_len_min=70
   for thickness in range(  1, thickness_max+1):
     for percent in range(  hand_len_min, hand_len_max, 5):
       clock_face_gen( image, dir_name, file_handle, diameter, int(diameter*percent/300 ), int(diameter*percent/200 ), thickness=thickness )
+
 
 def clock_multiface_gen_csv( face, dir_name, csv_file, diameter, hand_len_min=70, hand_len_max=90, thickness_max=1 ):
     # dir_name = os.path.join( curr_dir, dir )

@@ -90,7 +90,7 @@ def clock_face_gen( sub_dir, file_handle, diameter, hour_len, minute_len, thickn
             csv_line =  filename_path + "," +  str( math.sin( math.radians(hour_precise*30))/1.01 )
             csv_line += "," + str( math.cos( math.radians(hour_precise*30))/1.01 )
             csv_line += "," + str( math.sin( math.radians(minute*6))/1.01 )
-            csv_line += "," + str( math.cos( math.radians(minute*6))/1.01 ) + "\n'"
+            csv_line += "," + str( math.cos( math.radians(minute*6))/1.01 ) + "\n"
             file_handle.write(csv_line)
             tensor_to_png( image, filename_path )
 
